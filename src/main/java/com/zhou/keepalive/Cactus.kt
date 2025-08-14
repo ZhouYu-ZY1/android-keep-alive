@@ -96,6 +96,8 @@ class Cactus private constructor() {
     fun setNotificationChannel(notificationChannel: NotificationChannel?) = apply {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mNotificationConfig.notificationChannel = notificationChannel
+            mNotificationConfig.channelId = notificationChannel?.id ?: "Cactus"
+            mNotificationConfig.channelName = (notificationChannel?.name ?: "Cactus").toString()
         }
     }
 
