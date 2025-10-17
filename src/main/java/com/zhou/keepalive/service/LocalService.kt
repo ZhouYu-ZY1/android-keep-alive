@@ -132,6 +132,8 @@ class LocalService : Service(), IBinder.DeathRecipient {
         }
         setNotification(mCactusConfig.notificationConfig)
         mIsBind = startRemoteService(mServiceConnection, mCactusConfig)
+
+        callbackWork(0)
         return START_STICKY
     }
 
@@ -238,13 +240,17 @@ class LocalService : Service(), IBinder.DeathRecipient {
                 )
             )
             setCrashRestart(times)
-            if (Constant.CALLBACKS.isNotEmpty()) {
-                Constant.CALLBACKS.forEach {
-                    if (mCactusConfig.defaultConfig.workOnMainThread) {
-                        sMainHandler.post { it.doWork(times) }
-                    } else {
-                        it.doWork(times)
-                    }
+            callbackWork(times)
+        }
+    }
+
+    private fun callbackWork(times: Int) {
+        if (Constant.CALLBACKS.isNotEmpty()) {
+            Constant.CALLBACKS.forEach {
+                if (mCactusConfig.defaultConfig.workOnMainThread) {
+                    sMainHandler.post { it.doWork(times) }
+                } else {
+                    it.doWork(times)
                 }
             }
         }

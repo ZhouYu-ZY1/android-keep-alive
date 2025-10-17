@@ -93,8 +93,9 @@ internal fun Context.getNotification(notificationConfig: NotificationConfig): No
                 )
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
+                .setOngoing(true)
                 .setVisibility(NotificationCompat.VISIBILITY_SECRET)
-                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .apply {
                     remoteViews?.also {
                         setContent(it)
@@ -116,7 +117,7 @@ internal fun Context.getNotification(notificationConfig: NotificationConfig): No
                 notificationChannel = NotificationChannel(
                     notification.channelId,
                     notificationConfig.channelName,
-                    NotificationManager.IMPORTANCE_NONE
+                    NotificationManager.IMPORTANCE_DEFAULT
                 )
             }
             managerCompat.createNotificationChannel(notificationChannel as NotificationChannel)
